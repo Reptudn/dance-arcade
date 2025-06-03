@@ -7,10 +7,16 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_MIXER REQUIRED SDL2_mixer)
 
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
 link_directories(${SDL2_LIBRARY_DIRS})
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(ddr ${SOURCES})
 target_link_libraries(ddr ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
+
+target_compile_options(ddr PRIVATE -Wall -Wextra -pedantic)
+# if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+# 	target_compile_options(ddr PRIVATE -g -O0 -fsanitize=address -fsanitize=undefined)
+# else()
+# 	target_compile_options(ddr PRIVATE -O2)
