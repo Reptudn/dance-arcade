@@ -75,10 +75,6 @@ void Engine::run()
 	auto currTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration<double>(currTime - startTime).count();
 
-	Scene start_scene("Home", nullptr);
-
-	load_scene(&start_scene);
-
 	while (running)
 	{
 		auto frameStart = std::chrono::high_resolution_clock::now();
@@ -95,9 +91,15 @@ void Engine::run()
 		if (!running)
 			break;
 
-		if (current_scene->update)
-			current_scene->update();
-		render(current_scene);
+		if (current_scene)
+		{
+			if (current_scene->update)
+				current_scene->update();
+			render(current_scene);
+		} else {
+			utils::log::warning("No current scene to render, skipping render step.");
+			// TODO: display a default no scene message
+		}
 
 		auto frameEnd = std::chrono::high_resolution_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
