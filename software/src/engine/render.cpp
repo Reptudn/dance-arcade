@@ -22,7 +22,7 @@ static void render_ui(SDL_Renderer *renderer, TTF_Font *font)
 	int y = 100;
 
 	SDL_Color color = {255, 255, 255, 255}; // White
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font, "Hello, World!", color);
+	SDL_Surface *textSurface = TTF_RenderText_Blended(font, "Welcome to the dance arcade", color);
 	SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 	SDL_Rect dstRect = {x, y, textSurface->w, textSurface->h};
 	SDL_RenderCopy(renderer, textTexture, NULL, &dstRect);
