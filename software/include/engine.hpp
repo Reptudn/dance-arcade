@@ -13,10 +13,18 @@ struct s_scene
 {
 	std::string title;
 
+	s_scene(std::string title, void (*update)())
+	{
+		this->title = title;
+		this->update = update;
+	};
+
 	// render: background -> scene -> ui
-	// std::vector<void> background; // background elements in render order
-	// std::vector<void> scene;	  // scene elements in render order
-	// std::vector<void> ui;		  // ui elements in render order
+	std::vector<SDL_Texture *> background; // background elements in render order
+	std::vector<SDL_Texture *> scene;	   // scene elements in render order
+	std::vector<SDL_Texture *> ui;		   // ui elements in render order
+
+	void (*update)(); // main loop of the scene
 } typedef Scene;
 
 class Engine

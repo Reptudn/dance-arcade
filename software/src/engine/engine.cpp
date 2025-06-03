@@ -42,6 +42,8 @@ Engine::~Engine()
 			SDL_DestroyTexture(texture);
 	}
 
+	unload_scene(current_scene);
+
 	if (renderer)
 	{
 		SDL_DestroyRenderer(renderer);
@@ -73,6 +75,10 @@ void Engine::run()
 	auto currTime = std::chrono::high_resolution_clock::now();
 	deltaTime = std::chrono::duration<double>(currTime - startTime).count();
 
+	Scene start_scene("Home", nullptr);
+
+	load_scene(&start_scene);
+
 	while (running)
 	{
 		auto frameStart = std::chrono::high_resolution_clock::now();
@@ -89,8 +95,8 @@ void Engine::run()
 		if (!running)
 			break;
 
-		// insert the update logic here
-
+		if (current_scene->update)
+			current_scene->update();
 		render(current_scene);
 
 		auto frameEnd = std::chrono::high_resolution_clock::now();
