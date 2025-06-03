@@ -27,6 +27,9 @@ int main(int argc, char *argv[])
 		ret = 1;
 	}
 
-	utils::log::info("Exited.");
+	if (ret == 0)
+		utils::log::info("Exited good.");
+	else
+		utils::log::info("Edited badly.");
 	return ret;
 }

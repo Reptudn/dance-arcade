@@ -15,6 +15,17 @@
 #include <SDL2/SDL_mixer.h>
 #include <vector>
 #include <iostream>
+#include <filesystem>
+#include <SDL2/SDL_image.h>
+
+enum e_arrow_type
+{
+	TOP_LEFT,
+	TOP_RIGHT,
+	STOMP,
+	BOTTOM_LEFT,
+	BOTTOM_RIGHT
+} typedef t_arrow_type;
 
 struct s_arrow
 {
@@ -36,3 +47,26 @@ struct s_arrow
 		SDL_RenderFillRect(renderer, &rect);
 	}
 } typedef Arrow;
+
+struct s_song
+{
+	std::string name = "No Name";
+	std::string description = "No Description";
+	std::filesystem::path path = "";
+	SDL_Texture *background = nullptr;
+	int length = -1;
+} typedef Song;
+
+class Game
+{
+public:
+	Game();
+	~Game();
+
+private:
+	float scroll_speed;
+	std::vector<Song> songs;
+
+	int curr_song_index = -1;
+	Song *curr_song = nullptr;
+};

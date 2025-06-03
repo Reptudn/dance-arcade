@@ -1,14 +1,18 @@
 #include "engine.hpp"
 
-static void render_background(SDL_Renderer *renderer)
+static void render_background(SDL_Renderer *renderer, Scene *scene)
 {
 	if (!renderer)
 		return;
+
+	(void)scene;
+
 	SDL_SetRenderDrawColor(renderer, 50, 100, 150, 255);
 	SDL_RenderClear(renderer);
 }
-static void render_scene(SDL_Renderer *renderer)
+static void render_scene(SDL_Renderer *renderer, Scene *scene)
 {
+	(void)scene;
 	if (!renderer)
 		return;
 }
@@ -28,10 +32,15 @@ static void render_ui(SDL_Renderer *renderer, TTF_Font *font)
 	SDL_RenderCopy(renderer, textTexture, NULL, &dstRect);
 }
 
-void Engine::render()
+void Engine::render(Scene *scene)
 {
-	render_background(renderer);
-	render_scene(renderer);
+	if (!scene)
+	{
+		return;
+	}
+
+	render_background(renderer, scene);
+	render_scene(renderer, scene);
 	render_ui(renderer, font);
 
 	SDL_RenderPresent(renderer);

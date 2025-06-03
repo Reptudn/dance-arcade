@@ -4,43 +4,25 @@
 Engine::Engine(int width, int height, const char *title)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-	{
-		std::cerr << "SDL could not initialize! " << SDL_GetError() << std::endl;
-		throw std::runtime_error("SDL initialization failed");
-	}
+		throw std::runtime_error("SDL could not initialize: " + std::string(SDL_GetError()));
 
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
-		std::cerr << "SDL_mixer could not initialize! " << Mix_GetError() << std::endl;
-		throw std::runtime_error("SDL_mixer initialization failed");
-	}
+		throw std::runtime_error("SDL_mixer could not initialize: " + std::string(Mix_GetError()));
 
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
 	if (!window)
-	{
-		std::cerr << "Window could not be created! " << SDL_GetError() << std::endl;
-		throw std::runtime_error("Window creation failed");
-	}
+		throw std::runtime_error("Window could not be created: " + std::string(SDL_GetError()));
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
-	{
-		std::cerr << "Renderer could not be created! " << SDL_GetError() << std::endl;
-		throw std::runtime_error("Renderer creation failed");
-	}
+		throw std::runtime_error("Renderer could not be created: " + std::string(SDL_GetError()));
 
 	if (TTF_Init() < 0)
-	{
-		utils::log::error("Failed to init TTF");
-		throw std::runtime_error("TTF error");
-	}
+		throw std::runtime_error("Failed to init TTF: " + std::string(TTF_GetError()));
 
 	font = TTF_OpenFont("../assets/fonts/Montserrat-Bold.ttf", 24); // TODO: DONT HARDCODE THIS
 	if (!font)
-	{
-		utils::log::error("Failed to load font with TTF");
-		throw std::runtime_error("Failed to load font");
-	}
+		throw std::runtime_error("Failed to load font with TTF: " + std::string(TTF_GetError()));
 
 	running = true;
 	startTime = std::chrono::high_resolution_clock::now();
@@ -53,6 +35,12 @@ Engine::~Engine()
 	// 	Mix_FreeMusic(music);
 	// 	music = nullptr;
 	// }
+
+	for (SDL_Texture *texture : loaded_textures)
+	{
+		if (texture)
+			SDL_DestroyTexture(texture);
+	}
 
 	if (renderer)
 	{
@@ -69,7 +57,6 @@ Engine::~Engine()
 	if (font)
 	{
 		TTF_CloseFont(font);
-		font == nullptr;
 	}
 
 	TTF_Quit();
@@ -104,7 +91,7 @@ void Engine::run()
 
 		// insert the update logic here
 
-		render();
+		render(current_scene);
 
 		auto frameEnd = std::chrono::high_resolution_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
