@@ -1,4 +1,5 @@
 #include "engine.hpp"
+#include <utils.hpp>
 
 Engine::Engine(int width, int height, const char *title)
 {
@@ -28,6 +29,19 @@ Engine::Engine(int width, int height, const char *title)
 		throw std::runtime_error("Renderer creation failed");
 	}
 
+	if (TTF_Init() < 0)
+	{
+		utils::log::error("Failed to init TTF");
+		throw std::runtime_error("TTF error");
+	}
+
+	font = TTF_OpenFont("../assets/fonts/Montserrat-Bold.ttf", 24); // TODO: DONT HARDCODE THIS
+	if (!font)
+	{
+		utils::log::error("Failed to load font with TTF");
+		throw std::runtime_error("Failed to load font");
+	}
+
 	running = true;
 	startTime = std::chrono::high_resolution_clock::now();
 }
@@ -52,6 +66,13 @@ Engine::~Engine()
 		window = nullptr;
 	}
 
+	if (font)
+	{
+		TTF_CloseFont(font);
+		font == nullptr;
+	}
+
+	TTF_Quit();
 	Mix_Quit();
 	SDL_Quit();
 }
@@ -73,19 +94,17 @@ void Engine::run()
 		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
+			{
 				running = false;
+				utils::log::info("Running is now false");
+			}
 		}
 		if (!running)
 			break;
 
 		// insert the update logic here
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
 		render();
-
-		SDL_RenderPresent(renderer);
 
 		auto frameEnd = std::chrono::high_resolution_clock::now();
 		deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
@@ -93,4 +112,5 @@ void Engine::run()
 		if (deltaTime < frameDelay)
 			SDL_Delay(frameDelay - deltaTime);
 	}
+	utils::log::info("Done with engine loop");
 }

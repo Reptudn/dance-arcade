@@ -4,6 +4,7 @@
 #include <map>
 #include <functional>
 #include <chrono>
+#include <SDL2/SDL_ttf.h>
 
 #define FPS 60
 
@@ -19,6 +20,8 @@ public:
 private:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
+
+	TTF_Font *font;
 	// Mix_Music *music;
 
 	std::chrono::high_resolution_clock::time_point startTime;

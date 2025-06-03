@@ -27,5 +27,6 @@ int main(int argc, char *argv[])
 		ret = 1;
 	}
 
+	utils::log::info("Exited.");
 	return ret;
 }
