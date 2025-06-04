@@ -21,17 +21,18 @@ static void update(Engine &engine, SDL_Event &event)
 {
     (void)event;
     std::cout << "Home scene update function called." << std::endl;
+    if (engine.state[SDL_SCANCODE_ESCAPE])
+    {
+        engine.running = false;
+        return;
+    }
+
     if (event.type == SDL_KEYDOWN)
     {
         // load song selection scene
         engine.load_scene(song_select_scene(engine));
         engine.set_current_scene("Song Select");
         return;
-    }
-
-    if (engine.state[SDL_SCANCODE_ESCAPE])
-    {
-        engine.running = false;
     }
 }
 

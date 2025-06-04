@@ -19,6 +19,7 @@ void Engine::load_scene(Scene *scene)
 	utils::log::info("Loading Scene " + scene->title + "...");
 	scenes[scene->title] = scene;
 	scene->loaded = true;
+	current_scene = scene;
 	utils::log::info("Loaded Scene " + scene->title + "!");
 	if (scene->init)
 	{
