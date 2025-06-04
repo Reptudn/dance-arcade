@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include "utils.hpp"
+#include "scenes.hpp"
 
 static void init(Engine &engine)
 {
@@ -19,34 +20,18 @@ static void on_set_as_curr_scene(Engine &engine)
 static void update(Engine &engine, SDL_Event &event)
 {
     (void)event;
-    // std::cout << "Home scene update function called." << std::endl;
+    std::cout << "Home scene update function called." << std::endl;
+    if (event.type == SDL_KEYDOWN)
+    {
+        // load song selection scene
+        engine.load_scene(song_select_scene(engine));
+        engine.set_current_scene("Song Select");
+        return;
+    }
+
     if (engine.state[SDL_SCANCODE_ESCAPE])
     {
-        std::cout << "Escape key held!" << std::endl;
-    }
-
-    if (engine.state[SDL_SCANCODE_SPACE])
-    {
-        std::cout << "Space key held!" << std::endl;
-    }
-
-    if (engine.state[SDL_SCANCODE_A])
-    {
-        std::cout << "A key held!" << std::endl;
-    }
-    if (engine.state[SDL_SCANCODE_S])
-    {
-        std::cout << "S key held!" << std::endl;
-    }
-
-    if (engine.state[SDL_SCANCODE_J])
-    {
-        std::cout << "J key held!" << std::endl;
-    }
-
-    if (engine.state[SDL_SCANCODE_K])
-    {
-        std::cout << "K key held!" << std::endl;
+        engine.running = false;
     }
 }
 
