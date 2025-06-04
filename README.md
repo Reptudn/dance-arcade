@@ -8,4 +8,7 @@ For instructions on how to build navigate to either the software or hardware fol
 
 ## This is how it currently looks like:
 ![](./assets/screenshot.png)
+
+<br>
+
 (why does this picture not update lol)
