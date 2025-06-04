@@ -1,8 +1,8 @@
 #pragma once
 
 class Engine;
+class Game;
 
-#include "game.hpp"
 #include <map>
 #include <functional>
 #include <chrono>
@@ -82,7 +82,7 @@ public:
 	void unload_scene(Scene *scene);
 	void set_current_scene(std::string name);
 
-	Game game;
+	Game game();
 
 	SDL_Texture *load_texture(std::string path);
 	SDL_Texture *load_text(std::string text, int size);

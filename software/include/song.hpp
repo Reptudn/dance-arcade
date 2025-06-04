@@ -6,7 +6,7 @@
 
 #include "game.hpp"
 #include "engine.hpp"
-#include "game.hpp"
+#include "arrow.hpp"
 
 struct s_difficulty
 {

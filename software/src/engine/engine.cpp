@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include <utils.hpp>
+#include <SDL2/SDL_mixer.h>
 
 Engine::Engine(int width, int height, const char *title)
 {

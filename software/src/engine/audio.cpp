@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include "utils.hpp"
+#include <SDL2/SDL_mixer.h>
 
 Mix_Music *Engine::load_music_audio(std::string path, std::string name)
 {

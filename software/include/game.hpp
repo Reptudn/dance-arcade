@@ -19,21 +19,13 @@
 #include <SDL2/SDL_image.h>
 
 #include "song.hpp"
-#include "engine.hpp"
 
-struct s_arrow
-{
-	int column = -1; // type of the arrow
-	int time = -1;
-	bool slider = false;
-	int end_time = 0;
-
-	SDL_Texture *texture = nullptr; // texture of the arrow
-} typedef Arrow;
+class Engine;
 
 class Game
 {
 public:
+	Game() = default;
 	Game(Engine &engine);
 	~Game();
 
