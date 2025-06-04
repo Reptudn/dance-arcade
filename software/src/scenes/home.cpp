@@ -58,7 +58,7 @@ Scene *home_scene(Engine &engine)
     Vector2 center;
 
     SDL_Texture *logo = engine.load_texture("../assets/images/start_screen_logo.png");
-    SDL_Texture *background = engine.load_texture("../assets/background/home_background.png");
+    SDL_Texture *background = engine.load_texture("../assets/background/home_background.jpg");
     SDL_Texture *text = engine.load_text("Press anything to continue...", 24);
 
     SDL_QueryTexture(logo, NULL, NULL, &tex_w, &tex_h);
