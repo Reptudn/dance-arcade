@@ -82,6 +82,8 @@ public:
 	void unload_scene(Scene *scene);
 	void set_current_scene(std::string name);
 
+	Game game;
+
 	SDL_Texture *load_texture(std::string path);
 	SDL_Texture *load_text(std::string text, int size);
 	void unload_texture(SDL_Texture *texture);

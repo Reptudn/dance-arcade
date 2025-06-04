@@ -3,7 +3,17 @@
 
 static void init(Engine &engine)
 {
-	(void)engine;
+	engine.game = Game();
+	try
+	{
+		utils::log::info("Trying to load songs into memory");
+		engine.game.load_songs("../assets/songs/", engine);
+		utils::log::info("Songs loaded!");
+	}
+	catch (std::exception &e)
+	{
+		utils::log::error(e.what());
+	}
 }
 
 static void destroy(Engine &engine)

@@ -18,54 +18,36 @@
 #include <filesystem>
 #include <SDL2/SDL_image.h>
 
-enum e_arrow_type
-{
-	TOP_LEFT,
-	TOP_RIGHT,
-	STOMP,
-	BOTTOM_LEFT,
-	BOTTOM_RIGHT
-} typedef t_arrow_type;
+#include "song.hpp"
+#include "engine.hpp"
 
 struct s_arrow
 {
-	SDL_Rect rect;
-	float y;
-	s_arrow(int x, float startY)
-	{
-		rect = {x, (int)startY, 50, 50};
-		y = startY;
-	}
-	void update(float delta)
-	{
-		y += 200 * delta;
-		rect.y = static_cast<int>(y);
-	}
-	void draw(SDL_Renderer *renderer)
-	{
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red arrows
-		SDL_RenderFillRect(renderer, &rect);
-	}
-} typedef Arrow;
+	int column = -1; // type of the arrow
+	int time = -1;
+	bool slider = false;
+	int end_time = 0;
 
-struct s_song
-{
-	std::string name = "No Name";
-	std::string description = "No Description";
-	std::filesystem::path path = "";
-	SDL_Texture *background = nullptr;
-	int length = -1;
-} typedef Song;
+	SDL_Texture *texture = nullptr; // texture of the arrow
+} typedef Arrow;
 
 class Game
 {
 public:
-	Game();
+	Game(Engine &engine);
 	~Game();
+
+	void load_songs(const std::filesystem::path &path, Engine &engine);
 
 private:
 	float scroll_speed;
 	std::vector<Song> songs;
+
+	SDL_Texture *top_left;
+	SDL_Texture *top_right;
+	SDL_Texture *stomp;
+	SDL_Texture *bottom_left;
+	SDL_Texture *bottom_right;
 
 	int curr_song_index = -1;
 	Song *curr_song = nullptr;

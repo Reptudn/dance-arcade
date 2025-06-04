@@ -27,6 +27,7 @@ Mix_Chunk *Engine::load_chunk_audio(std::string path, std::string name)
 	return chunk;
 }
 
+// maybe play music in different channels
 void Engine::play_sound(std::string name, int loops)
 {
 	auto it = loaded_chunks.find(name);
