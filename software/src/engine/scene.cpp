@@ -20,6 +20,14 @@ void Engine::load_scene(Scene *scene)
 	scenes[scene->title] = scene;
 	scene->loaded = true;
 	utils::log::info("Loaded Scene " + scene->title + "!");
+	if (scene->init)
+	{
+		utils::log::debug("Calling init function for Scene " + scene->title + "...");
+		scene->init(*this);
+		utils::log::debug("Init function for Scene " + scene->title + " called successfully.");
+	}
+	else
+		utils::log::warning("Scene " + scene->title + " has no init function, skipping.");
 }
 
 void Engine::set_current_scene(std::string name)
@@ -39,6 +47,15 @@ void Engine::set_current_scene(std::string name)
 
 	current_scene = scene;
 	utils::log::info("Set current Scene to: " + scene->title);
+
+	if (scene->on_set_as_curr_scene)
+	{
+		utils::log::info("Running on set as current scene function for: " + scene->title);
+		scene->on_set_as_curr_scene(*this);
+		utils::log::info("Ran on set as current scene function for: " + scene->title);
+	}
+	else
+		utils::log::info("Scene has no on set as current scene function: " + scene->title);
 }
 
 void Engine::unload_scene(Scene *scene)
@@ -61,25 +78,37 @@ void Engine::unload_scene(Scene *scene)
 			  << scene->scene.size() << " scene textures, and "
 			  << scene->ui.size() << " ui textures." << std::endl;
 
-	utils::log::debug("Unloading background textures...");
-	for (SDL_Texture *tex : scene->background)
+	if (scene->destroy)
 	{
+		utils::log::debug("Calling destroy function for Scene " + scene->title + "...");
+		scene->destroy(*this);
+		utils::log::debug("Destroy function for Scene " + scene->title + " called successfully.");
+	}
+	else
+		utils::log::warning("Scene " + scene->title + " has no destroy function, skipping.");
+
+	utils::log::debug("Unloading background textures...");
+	for (SceneObject obj : scene->background)
+	{
+		auto tex = obj.texture;
 		if (tex == nullptr)
 			continue;
 		unload_texture(tex);
 	}
 
 	utils::log::debug("Unloading scene textures...");
-	for (SDL_Texture *tex : scene->scene)
+	for (SceneObject obj : scene->scene)
 	{
+		auto tex = obj.texture;
 		if (tex == nullptr)
 			continue;
 		unload_texture(tex);
 	}
 
 	utils::log::debug("Unloading ui textures...");
-	for (SDL_Texture *tex : scene->ui)
+	for (SceneObject obj : scene->ui)
 	{
+		auto tex = obj.texture;
 		if (tex == nullptr)
 			continue;
 		unload_texture(tex);

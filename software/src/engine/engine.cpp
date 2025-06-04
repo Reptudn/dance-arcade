@@ -24,6 +24,8 @@ Engine::Engine(int width, int height, const char *title)
 	if (!font)
 		throw std::runtime_error("Failed to load font with TTF: " + std::string(TTF_GetError()));
 
+	state = SDL_GetKeyboardState(NULL);
+
 	running = true;
 	startTime = std::chrono::high_resolution_clock::now();
 }
@@ -94,9 +96,11 @@ void Engine::run()
 		if (current_scene)
 		{
 			if (current_scene->update)
-				current_scene->update();
+				current_scene->update(*this, e);
 			render(current_scene);
-		} else {
+		}
+		else
+		{
 			utils::log::warning("No current scene to render, skipping render step.");
 			// TODO: display a default no scene message
 		}
