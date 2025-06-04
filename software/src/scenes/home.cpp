@@ -5,16 +5,26 @@
 static void init(Engine &engine)
 {
     engine.load_music_audio("../assets/songs/start_screen.mp3", "home_background_music");
+    engine.load_chunk_audio("../assets/sounds/random.mp3", "random");
+    engine.load_chunk_audio("../assets/sounds/thats_ddr.mp3", "thats_ddr");
 }
 
 static void destroy(Engine &engine)
 {
     engine.unload_sound("home_background_music");
+    engine.unload_sound("random");
+    engine.unload_sound("thats_ddr");
 }
 
 static void on_set_as_curr_scene(Engine &engine)
 {
+    engine.play_sound("thats_ddr", 0);
     engine.play_sound("home_background_music", -1);
+}
+
+static void on_unset_as_curr_scene(Engine &engine)
+{
+    engine.stop_playing("home_background_music");
 }
 
 static void update(Engine &engine, SDL_Event &event)
@@ -27,6 +37,12 @@ static void update(Engine &engine, SDL_Event &event)
         return;
     }
 
+    if (event.key.keysym.scancode == SDL_SCANCODE_X)
+    {
+        engine.play_sound("random", 0);
+        return;
+    }
+
     if (event.type == SDL_KEYDOWN)
     {
         // load song selection scene
@@ -34,11 +50,6 @@ static void update(Engine &engine, SDL_Event &event)
         engine.set_current_scene("Song Select");
         return;
     }
-}
-
-static void on_unset_as_curr_scene(Engine &engine)
-{
-    engine.stop_playing("home_background_music");
 }
 
 Scene *home_scene(Engine &engine)

@@ -43,10 +43,7 @@ void Engine::play_sound(std::string name, int loops)
 		utils::log::info("Playing music: " + name);
 		return;
 	}
-	else
-	{
-		utils::log::error("Music not found: " + name);
-	}
+	utils::log::error("Music not found: " + name);
 }
 
 void Engine::stop_playing(std::string name)
@@ -87,10 +84,6 @@ void Engine::unload_sound(std::string name)
 		utils::log::info("Unloaded music: " + name);
 		return;
 	}
-	else
-	{
-		utils::log::error("Music not found: " + name);
-	}
 
 	auto it2 = loaded_chunks.find(name);
 	if (it2 != loaded_chunks.end())
@@ -100,12 +93,5 @@ void Engine::unload_sound(std::string name)
 		utils::log::info("Unloaded sound: " + name);
 		return;
 	}
-	else
-	{
-		utils::log::error("Sound not found: " + name);
-	}
-	if (loaded_music.find(name) == loaded_music.end() && loaded_chunks.find(name) == loaded_chunks.end())
-	{
-		utils::log::error("Audio not found: " + name);
-	}
+	utils::log::error("Audio to unload not found: " + name);
 }
