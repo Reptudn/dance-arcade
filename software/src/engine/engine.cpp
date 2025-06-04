@@ -94,9 +94,11 @@ void Engine::run()
 		if (current_scene)
 		{
 			if (current_scene->update)
-				current_scene->update();
+				current_scene->update(e);
 			render(current_scene);
-		} else {
+		}
+		else
+		{
 			utils::log::warning("No current scene to render, skipping render step.");
 			// TODO: display a default no scene message
 		}

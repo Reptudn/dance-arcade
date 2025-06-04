@@ -12,40 +12,51 @@
 // TODO: Make all SDL_Texrute vectors to a vector of scene objects
 struct s_scene_object
 {
-	std::string name; // name of the object
+	std::string name;				// name of the object
 	SDL_Texture *texture = nullptr; // texture of the object
-	SDL_Rect rect = {0, 0, 0, 0}; // rectangle for rendering the object
-	bool visible = true; // if the object is visible
+	SDL_Rect rect = {0, 0, 0, 0};	// rectangle for rendering the object
+	bool visible = true;			// if the object is visible
+	int x = 0;						// x position of the object
+	int y = 0;						// y position of the object
+	int width = 0;					// width of the object
+	int height = 0;					// height of the object
+	double rotation = 0.0;			// rotation of the object
 
 	s_scene_object() = delete;
+	s_scene_object(std::string name) : name(name) {}
+	s_scene_object(SDL_Texture *texture) : texture(texture) {}
 	// s_scene_object(std::string name, SDL_Texture *texture, SDL_Rect rect)
-	s_scene_object(std::string name, SDL_Texture *texture)
-	{
-		this->name = name;
-		this->texture = texture;
-		// this->rect = rect;
-	};
+	s_scene_object(std::string name, SDL_Texture *texture) : name(name), texture(texture) {}
 } typedef SceneObject;
 
+// TODO: make this an abstract class so scenes can derive from it with custom constructor and destructor
 struct s_scene
 {
 	std::string title = "Untitled Scene"; // title of the scene
 	s_scene() = delete;
 	s_scene(std::string title) = delete;
-	s_scene(std::string title, void (*update)())
+	s_scene(std::string title, void (*update)(SDL_Event &event), void (*init)(), void (*destroy)(), void (*on_set_as_curr_scene)())
 	{
 		this->title = title;
 		this->update = update;
+		this->destroy = destroy;
+		this->init = init;
+		this->on_set_as_curr_scene = on_set_as_curr_scene;
 	};
 
+	// TODO: store them all sorted in one map by key and ordered by render prio
+
 	// render: background -> scene -> ui
-	std::vector<SDL_Texture *> background = std::vector<SDL_Texture *>(0); // background elements in render order
-	std::vector<SDL_Texture *> scene = std::vector<SDL_Texture *>(0);	   // scene elements in render order
-	std::vector<SDL_Texture *> ui = std::vector<SDL_Texture *>(0);;	   // ui elements in render order
+	std::vector<SceneObject> background = std::vector<SceneObject>(0); // background elements in render order
+	std::vector<SceneObject> scene = std::vector<SceneObject>(0);	   // scene elements in render order
+	std::vector<SceneObject> ui = std::vector<SceneObject>(0);		   // ui element in render order
 
 	bool loaded = false; // if the scene is loaded
 
-	void (*update)(); // main loop of the scene
+	void (*update)(SDL_Event &event) = nullptr; // main loop of the scene
+	void (*init)() = nullptr;					// called when the scene is loaded
+	void (*destroy)() = nullptr;				// called when the scenes is unloaded
+	void (*on_set_as_curr_scene)() = nullptr;	// called when the scene is set as current scene
 } typedef Scene;
 
 class Engine
@@ -72,7 +83,7 @@ private:
 	// Mix_Music *music;
 
 	Scene *current_scene = nullptr;
-	std::map<std::string, Scene*> scenes;
+	std::map<std::string, Scene *> scenes;
 	std::vector<SDL_Texture *> loaded_textures;
 
 	std::chrono::high_resolution_clock::time_point startTime;

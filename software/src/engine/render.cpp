@@ -85,7 +85,7 @@ void Engine::render(Scene *scene)
 	}
 
 	SDL_RenderClear(renderer);
-	
+
 	render_background(renderer, scene->background);
 	render_scene(renderer, scene->scene);
 	render_ui(renderer, scene->ui);
