@@ -32,19 +32,32 @@ Engine::Engine(int width, int height, const char *title)
 
 Engine::~Engine()
 {
-	// if (music)
-	// {
-	// 	Mix_FreeMusic(music);
-	// 	music = nullptr;
-	// }
+
+	for (auto sound : loaded_music)
+	{
+		if (sound.second)
+		{
+			Mix_FreeMusic(sound.second);
+		}
+	}
+	loaded_music.clear();
+	for (auto sound : loaded_chunks)
+	{
+		if (sound.second)
+		{
+			Mix_FreeChunk(sound.second);
+		}
+	}
+	loaded_chunks.clear();
+
+	unload_scene(current_scene);
 
 	for (SDL_Texture *texture : loaded_textures)
 	{
 		if (texture)
 			SDL_DestroyTexture(texture);
 	}
-
-	unload_scene(current_scene);
+	loaded_textures.clear();
 
 	if (renderer)
 	{

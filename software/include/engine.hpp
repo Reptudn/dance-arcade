@@ -42,13 +42,15 @@ struct s_scene
 		void (*update)(Engine &engine, SDL_Event &event),
 		void (*init)(Engine &engine),
 		void (*destroy)(Engine &engine),
-		void (*on_set_as_curr_scene)(Engine &engine))
+		void (*on_set_as_curr_scene)(Engine &engine),
+		void (*on_unset_as_curr_scene)(Engine &engine))
 	{
 		this->title = title;
 		this->update = update;
 		this->destroy = destroy;
 		this->init = init;
 		this->on_set_as_curr_scene = on_set_as_curr_scene;
+		this->on_unset_as_curr_scene = on_unset_as_curr_scene;
 	};
 
 	// TODO: store them all sorted in one map by key and ordered by render prio
@@ -64,6 +66,7 @@ struct s_scene
 	void (*init)(Engine &engine) = nullptr;						// called when the scene is loaded
 	void (*destroy)(Engine &engine) = nullptr;					// called when the scenes is unloaded
 	void (*on_set_as_curr_scene)(Engine &engine) = nullptr;		// called when the scene is set as current scene
+	void (*on_unset_as_curr_scene)(Engine &engine) = nullptr;	// called when the scene is unset as current scene
 } typedef Scene;
 
 class Engine
@@ -82,17 +85,24 @@ public:
 	SDL_Texture *load_texture(std::string path);
 	SDL_Texture *load_text(std::string text, int size);
 	void unload_texture(SDL_Texture *texture);
+	Mix_Music *load_music_audio(std::string path, std::string name);
+	Mix_Chunk *load_chunk_audio(std::string path, std::string name);
+	void play_sound(std::string name, int loops);
+	void unload_sound(std::string name);
+	void stop_playing(std::string name);
 	const Uint8 *state;
 
 private:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	TTF_Font *font;
-	// Mix_Music *music;
+	Mix_Music *music;
 
 	Scene *current_scene = nullptr;
 	std::map<std::string, Scene *> scenes;
 	std::vector<SDL_Texture *> loaded_textures;
+	std::map<std::string, Mix_Music *> loaded_music;
+	std::map<std::string, Mix_Chunk *> loaded_chunks;
 
 	std::chrono::high_resolution_clock::time_point startTime;
 	double deltaTime;

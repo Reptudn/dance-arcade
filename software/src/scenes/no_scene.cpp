@@ -3,7 +3,7 @@
 
 Scene *no_scene(Engine &engine)
 {
-    Scene *no_scene = new Scene("No Scene", nullptr, nullptr, nullptr, nullptr);
+    Scene *no_scene = new Scene("No Scene", nullptr, nullptr, nullptr, nullptr, nullptr);
     SDL_Texture *text = engine.load_text("No Scene Loaded", 24);
 
     int tex_w = 0, tex_h = 0;

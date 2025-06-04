@@ -4,23 +4,23 @@
 
 static void init(Engine &engine)
 {
-    (void)engine;
+    engine.load_music_audio("../assets/songs/start_screen.mp3", "home_background_music");
 }
 
 static void destroy(Engine &engine)
 {
-    (void)engine;
+    engine.unload_sound("home_background_music");
 }
 
 static void on_set_as_curr_scene(Engine &engine)
 {
-    (void)engine;
+    engine.play_sound("home_background_music", -1);
 }
 
 static void update(Engine &engine, SDL_Event &event)
 {
     (void)event;
-    std::cout << "Home scene update function called." << std::endl;
+    // std::cout << "Home scene update function called." << std::endl;
     if (engine.state[SDL_SCANCODE_ESCAPE])
     {
         engine.running = false;
@@ -36,9 +36,14 @@ static void update(Engine &engine, SDL_Event &event)
     }
 }
 
+static void on_unset_as_curr_scene(Engine &engine)
+{
+    engine.stop_playing("home_background_music");
+}
+
 Scene *home_scene(Engine &engine)
 {
-    Scene *home = new Scene("Home", update, init, destroy, on_set_as_curr_scene);
+    Scene *home = new Scene("Home", update, init, destroy, on_set_as_curr_scene, on_unset_as_curr_scene);
 
     int tex_w = 0, tex_h = 0;
     Vector2 center;

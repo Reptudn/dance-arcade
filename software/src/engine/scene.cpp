@@ -46,6 +46,9 @@ void Engine::set_current_scene(std::string name)
 		return;
 	}
 
+	if (current_scene->on_unset_as_curr_scene)
+		current_scene->on_unset_as_curr_scene(*this);
+
 	current_scene = scene;
 	utils::log::info("Set current Scene to: " + scene->title);
 

@@ -21,7 +21,7 @@ static void update(Engine &engine, SDL_Event &event)
 	(void)event;
 	(void)engine;
 
-	std::cout << "Song select update" << std::endl;
+	// std::cout << "Song select update" << std::endl;
 
 	if (engine.state[SDL_SCANCODE_Q])
 	{
@@ -29,9 +29,14 @@ static void update(Engine &engine, SDL_Event &event)
 	}
 }
 
+static void on_unset_as_curr_scene(Engine &engine)
+{
+	(void)engine;
+}
+
 Scene *song_select_scene(Engine &engine)
 {
-	Scene *song_select = new Scene("Song Select", update, init, destroy, on_set_as_curr_scene);
+	Scene *song_select = new Scene("Song Select", update, init, destroy, on_set_as_curr_scene, on_unset_as_curr_scene);
 
 	int tex_w = 0, tex_h = 0;
 	Vector2 center;
