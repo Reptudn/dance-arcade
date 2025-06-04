@@ -16,7 +16,6 @@ struct s_scene_object
 {
 	std::string name;				// name of the object
 	SDL_Texture *texture = nullptr; // texture of the object
-	SDL_Rect rect = {0, 0, 0, 0};	// rectangle for rendering the object
 	bool visible = true;			// if the object is visible
 	int x = 0;						// x position of the object
 	int y = 0;						// y position of the object
@@ -29,6 +28,7 @@ struct s_scene_object
 	s_scene_object(SDL_Texture *texture) : texture(texture) {}
 	// s_scene_object(std::string name, SDL_Texture *texture, SDL_Rect rect)
 	s_scene_object(std::string name, SDL_Texture *texture) : name(name), texture(texture) {}
+	s_scene_object(std::string name, SDL_Texture *texture, int x, int y, int width, int height, double rotation) : name(name), texture(texture), x(x), y(y), width(width), height(height), rotation(rotation) {}
 } typedef SceneObject;
 
 // TODO: make this an abstract class so scenes can derive from it with custom constructor and destructor

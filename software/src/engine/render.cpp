@@ -2,66 +2,56 @@
 
 static void render_background(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
-	if (!renderer)
+	if (!renderer || obj.empty())
 		return;
-
-	if (obj.empty())
-	{
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
-		SDL_RenderClear(renderer);
-		return;
-	}
 
 	for (SceneObject &object : obj)
 	{
 		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect = object.rect;
+		SDL_Rect dstRect = {
+			object.x,
+			object.y,
+			object.width,
+			object.height};
 		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
-
-	SDL_SetRenderDrawColor(renderer, 50, 100, 150, 255);
-	SDL_RenderClear(renderer);
 }
 static void render_scene(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
-	if (!renderer)
+	if (!renderer || obj.empty())
 		return;
 
-	if (obj.empty())
-	{
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
-		SDL_RenderClear(renderer);
-		return;
-	}
 	for (SceneObject &object : obj)
 	{
 		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect = object.rect;
+		SDL_Rect dstRect = {
+			object.x,
+			object.y,
+			object.width,
+			object.height};
 		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
 }
 
 static void render_ui(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
-	if (!renderer)
+	if (!renderer || obj.empty())
 		return;
 
-	if (obj.empty())
-	{
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
-		SDL_RenderClear(renderer);
-		return;
-	}
 	for (SceneObject &object : obj)
 	{
 		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect = object.rect;
+		SDL_Rect dstRect = {
+			object.x,
+			object.y,
+			object.width,
+			object.height};
 		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
 }
