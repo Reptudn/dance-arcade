@@ -1,79 +1,68 @@
 #include "engine.hpp"
 
-static void render_background(SDL_Renderer *renderer, std::vector<SDL_Texture *> &textures)
+static void render_background(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
 	if (!renderer)
 		return;
 
-	if (textures.empty())
+	if (obj.empty())
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
 		SDL_RenderClear(renderer);
 		return;
 	}
-	for (SDL_Texture *texture : textures)
+
+	for (SceneObject &object : obj)
 	{
-		if (!texture)
+		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect;
-		SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
-		dstRect.x = 0; // Position at the top-left corner
-		dstRect.y = 0;
-
-		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+		SDL_Rect dstRect = object.rect;
+		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
 
 	SDL_SetRenderDrawColor(renderer, 50, 100, 150, 255);
 	SDL_RenderClear(renderer);
 }
-static void render_scene(SDL_Renderer *renderer, std::vector<SDL_Texture *> &textures)
+static void render_scene(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
 	if (!renderer)
 		return;
 
-	if (textures.empty())
+	if (obj.empty())
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
 		SDL_RenderClear(renderer);
 		return;
 	}
-	for (SDL_Texture *texture : textures)
+	for (SceneObject &object : obj)
 	{
-		if (!texture)
+		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect;
-		SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
-		dstRect.x = 0; // Position at the top-left corner
-		dstRect.y = 0;
-
-		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+		SDL_Rect dstRect = object.rect;
+		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
 }
 
-static void render_ui(SDL_Renderer *renderer, std::vector<SDL_Texture *> &textures)
+static void render_ui(SDL_Renderer *renderer, std::vector<SceneObject> &obj)
 {
 	if (!renderer)
 		return;
 
-	if (textures.empty())
+	if (obj.empty())
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Default to black if no textures
 		SDL_RenderClear(renderer);
 		return;
 	}
-	for (SDL_Texture *texture : textures)
+	for (SceneObject &object : obj)
 	{
-		if (!texture)
+		if (!object.texture || !object.visible)
 			continue;
 
-		SDL_Rect dstRect;
-		SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
-		dstRect.x = 0; // Position at the top-left corner
-		dstRect.y = 0;
-
-		SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+		SDL_Rect dstRect = object.rect;
+		SDL_RenderCopy(renderer, object.texture, NULL, &dstRect);
 	}
 }
 

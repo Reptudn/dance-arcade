@@ -1,5 +1,7 @@
 #pragma once
 
+class Engine;
+
 #include "game.hpp"
 #include <map>
 #include <functional>
@@ -22,7 +24,7 @@ struct s_scene_object
 	int height = 0;					// height of the object
 	double rotation = 0.0;			// rotation of the object
 
-	s_scene_object() = delete;
+	s_scene_object() = default;
 	s_scene_object(std::string name) : name(name) {}
 	s_scene_object(SDL_Texture *texture) : texture(texture) {}
 	// s_scene_object(std::string name, SDL_Texture *texture, SDL_Rect rect)
@@ -33,9 +35,14 @@ struct s_scene_object
 struct s_scene
 {
 	std::string title = "Untitled Scene"; // title of the scene
-	s_scene() = delete;
+	s_scene() = default;
 	s_scene(std::string title) = delete;
-	s_scene(std::string title, void (*update)(SDL_Event &event), void (*init)(), void (*destroy)(), void (*on_set_as_curr_scene)())
+	s_scene(
+		std::string title,
+		void (*update)(Engine &engine, SDL_Event &event),
+		void (*init)(Engine &engine),
+		void (*destroy)(Engine &engine),
+		void (*on_set_as_curr_scene)(Engine &engine))
 	{
 		this->title = title;
 		this->update = update;
@@ -53,10 +60,10 @@ struct s_scene
 
 	bool loaded = false; // if the scene is loaded
 
-	void (*update)(SDL_Event &event) = nullptr; // main loop of the scene
-	void (*init)() = nullptr;					// called when the scene is loaded
-	void (*destroy)() = nullptr;				// called when the scenes is unloaded
-	void (*on_set_as_curr_scene)() = nullptr;	// called when the scene is set as current scene
+	void (*update)(Engine &engine, SDL_Event &event) = nullptr; // main loop of the scene
+	void (*init)(Engine &engine) = nullptr;						// called when the scene is loaded
+	void (*destroy)(Engine &engine) = nullptr;					// called when the scenes is unloaded
+	void (*on_set_as_curr_scene)(Engine &engine) = nullptr;		// called when the scene is set as current scene
 } typedef Scene;
 
 class Engine
@@ -75,6 +82,7 @@ public:
 	SDL_Texture *load_texture(std::string path);
 	SDL_Texture *load_text(std::string text, int size);
 	void unload_texture(SDL_Texture *texture);
+	const Uint8 *state;
 
 private:
 	SDL_Window *window;
