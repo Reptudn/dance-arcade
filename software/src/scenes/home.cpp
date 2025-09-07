@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include "utils.hpp"
 #include "scenes.hpp"
+#include <game.hpp>
 
 static void init(Engine &engine)
 {

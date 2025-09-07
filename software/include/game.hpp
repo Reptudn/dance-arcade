@@ -18,9 +18,10 @@
 #include <filesystem>
 #include <SDL2/SDL_image.h>
 
-#include "song.hpp"
+// #include "song.hpp"
 
 class Engine;
+class Song;
 
 class Game
 {

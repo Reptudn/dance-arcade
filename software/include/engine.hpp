@@ -8,6 +8,7 @@ class Game;
 #include <chrono>
 #include <SDL2/SDL_ttf.h>
 #include <string>
+#include <SDL_mixer.h>
 
 #define FPS 60
 
