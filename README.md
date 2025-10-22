@@ -1,5 +1,7 @@
 # dance-arcade
 
+> CURRENTLY ON HOLD!
+
 i wanna build a dance dance revolution like arcade machine fully from scratch both software and hardware-wise
 
 ## How to build?
